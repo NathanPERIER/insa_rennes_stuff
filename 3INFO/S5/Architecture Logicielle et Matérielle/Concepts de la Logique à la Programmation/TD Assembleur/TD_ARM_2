@@ -1,0 +1,24 @@
+.set N 10
+
+.bss
+res:	.word
+
+.text
+.global _start
+
+_start:
+	MOV r0,#1	
+	MOV r1,#1	
+	LDR r2,=res
+	
+for:			@plutôt un while en fait
+	CMP r1,#N	@compare i and N
+	BGT end		@if i > N, jump to end 
+	
+	MUL r0,r0,r1	@fact *= i
+	ADD r1,r1,#1	@i++
+	
+	B for		@jump to beginning of loop
+
+end :
+	STR r0,[r2]

@@ -1,0 +1,143 @@
+<html><head><title>tp_possible_worlds_students.ecl</title>
+	    <link type="text/css" rel="stylesheet" href="style.css"> </head><body><h1>File: tp_possible_worlds_students.ecl
+</h1><HR>
+<pre><span class="comment">% dana likes cody
+% bess does not like dana
+% cody does not like abby
+% nobody likes someone who does not like her
+% abby likes everyone who likes bess
+% dana likes everyone bess likes
+% everybody likes somebody
+
+</span><a name="people-1"></a><span class="head">people</span>([<span class="atom">abby</span>, <span class="atom">bess</span>, <span class="atom">cody</span>, <span class="atom">dana</span>])<span class="coverage"> 65537 </span>.<span class="comment">
+
+% 1.1
+
+</span><a name="addAll-4"></a><span class="head">addAll</span>(<span class="variable">_2571</span>, <span class="head">[]</span>, <span class="variable">R</span>, <span class="variable">R</span>)<span class="coverage"> 4 </span>.<span class="comment">
+</span><span class="head">addAll</span>(<span class="variable">E</span>, [<span class="variable">A</span>|<span class="variable">L</span>], <span class="variable">M</span>, <span class="variable">R</span>) <span class="control">:-</span>
+        <span class="coverage"> 16 </span><a class="call" href="#addAll-4">addAll</a>(<span class="variable">E</span>, <span class="variable">L</span>, [<span class="functor">likes</span>(<span class="variable">E</span>, <span class="variable">A</span>)|<span class="variable">M</span>], <span class="variable">R</span>)<span class="coverage"> 16 </span>.<span class="comment">
+
+</span><a name="mkpairs-4"></a><span class="head">mkpairs</span>(<span class="variable">_3575</span>, <span class="head">[]</span>, <span class="variable">R</span>, <span class="variable">R</span>)<span class="coverage"> 1 </span>.<span class="comment">
+</span><span class="head">mkpairs</span>(<span class="variable">L</span>, [<span class="variable">E</span>|<span class="variable">Li</span>], <span class="variable">A</span>, <span class="variable">R</span>) <span class="control">:-</span>
+        <span class="coverage"> 4 </span><a class="call" href="#addAll-4">addAll</a>(<span class="variable">E</span>, <span class="variable">L</span>, <span class="variable">A</span>, <span class="variable">A1</span>),
+        <span class="coverage"> 4 </span><a class="call" href="#mkpairs-4">mkpairs</a>(<span class="variable">L</span>, <span class="variable">Li</span>, <span class="variable">A1</span>, <span class="variable">R</span>)<span class="coverage"> 4 </span>.<span class="comment">
+
+</span><a name="make_all_pairs-2"></a><span class="head">make_all_pairs</span>(<span class="variable">L</span>, <span class="variable">R</span>) <span class="control">:-</span>
+        <span class="coverage"> 1 </span><a class="call" href="#mkpairs-4">mkpairs</a>(<span class="variable">L</span>, <span class="variable">L</span>, <span class="atom">[]</span>, <span class="variable">R</span>)<span class="coverage"> 1 </span>.<span class="comment">
+
+
+% 1.2
+
+</span><a name="sub_list-2"></a><span class="head">sub_list</span>(<span class="head">[]</span>, <span class="head">[]</span>)<span class="coverage"> 65536 </span>.<span class="comment">
+</span><span class="head">sub_list</span>([<span class="variable">_5747</span>|<span class="variable">L</span>], <span class="variable">R</span>) <span class="control">:-</span>
+        <span class="coverage"> 65535 </span><a class="call" href="#sub_list-2">sub_list</a>(<span class="variable">L</span>, <span class="variable">R</span>)<span class="coverage"> 524288 </span>.<span class="comment">
+</span><span class="head">sub_list</span>([<span class="variable">A</span>|<span class="variable">L</span>], [<span class="variable">A</span>|<span class="variable">R</span>]) <span class="control">:-</span>
+        <span class="coverage"> 65535 </span><a class="call" href="#sub_list-2">sub_list</a>(<span class="variable">L</span>, <span class="variable">R</span>)<span class="coverage"> 524288 </span>.<span class="comment">
+
+
+% 1.3
+
+</span><a name="contains-2"></a><span class="head">contains</span>(<span class="variable">E</span>, [<span class="variable">E</span>|<span class="variable">_6764</span>]) <span class="control">:-</span>
+        <span class="coverage"> 31404 </span><a class="warning" href="file:///opt/eclipse_prolog/doc/bips/kernel/control/I-0.html">!</a><span class="coverage"> 31404 </span>.<span class="comment">
+</span><span class="head">contains</span>(<span class="variable">E</span>, [<span class="variable">_7247</span>|<span class="variable">L</span>]) <span class="control">:-</span>
+        <span class="coverage"> 239754 </span><a class="call" href="#contains-2">contains</a>(<span class="variable">E</span>, <span class="variable">L</span>)<span class="coverage"> 18442 </span>.<span class="comment">
+
+</span><a name="contains_not-2"></a><span class="head">contains_not</span>(<span class="variable">_7716</span>, <span class="head">[]</span>)<span class="coverage"> 18480 </span>.<span class="comment">
+</span><span class="head">contains_not</span>(<span class="variable">E</span>, [<span class="variable">E</span>|<span class="variable">_8075</span>]) <span class="control">:-</span>
+        <span class="coverage"> 21120 </span><a class="warning" href="file:///opt/eclipse_prolog/doc/bips/kernel/control/I-0.html">!</a>,
+        <span class="coverage"> 21120 </span><a class="builtin" href="file:///opt/eclipse_prolog/doc/bips/kernel/control/fail-0.html">fail</a><span class="nocoverage"> 0 </span>.<span class="comment">
+</span><span class="head">contains_not</span>(<span class="variable">E</span>, [<span class="variable">_8612</span>|<span class="variable">L</span>]) <span class="control">:-</span>
+        <span class="coverage"> 247864 </span><a class="call" href="#contains_not-2">contains_not</a>(<span class="variable">E</span>, <span class="variable">L</span>)<span class="coverage"> 154264 </span>.<span class="comment">
+
+</span><a name="remove-3"></a><span class="head">remove</span>(<span class="variable">_9107</span>, <span class="head">[]</span>, <span class="head">[]</span>)<span class="coverage"> 471281 </span>.<span class="comment">
+</span><span class="head">remove</span>(<span class="variable">E</span>, [<span class="variable">E</span>|<span class="variable">L</span>], <span class="variable">R</span>) <span class="control">:-</span>
+        <span class="coverage"> 250128 </span><a class="warning" href="file:///opt/eclipse_prolog/doc/bips/kernel/control/I-0.html">!</a>,
+        <span class="coverage"> 250128 </span><a class="call" href="#remove-3">remove</a>(<span class="variable">E</span>, <span class="variable">L</span>, <span class="variable">R</span>)<span class="coverage"> 250128 </span>.<span class="comment">
+</span><span class="head">remove</span>(<span class="variable">E</span>, [<span class="variable">A</span>|<span class="variable">L</span>], [<span class="variable">A</span>|<span class="variable">R</span>]) <span class="control">:-</span>
+        <span class="coverage"> 858448 </span><a class="call" href="#remove-3">remove</a>(<span class="variable">E</span>, <span class="variable">L</span>, <span class="variable">R</span>)<span class="coverage"> 858448 </span>.<span class="comment">
+
+
+</span><a name="proposition1-1"></a><span class="head">proposition1</span>(<span class="variable">L</span>) <span class="control">:-</span>
+        <span class="coverage"> 50625 </span><a class="call" href="#contains-2">contains</a>(<span class="functor">likes</span>(<span class="atom">dana</span>, <span class="atom">cody</span>), <span class="variable">L</span>)<span class="coverage"> 27000 </span>.<span class="comment">
+
+</span><a name="proposition2-1"></a><span class="head">proposition2</span>(<span class="variable">L</span>) <span class="control">:-</span>
+        <span class="coverage"> 27000 </span><a class="call" href="#contains_not-2">contains_not</a>(<span class="functor">likes</span>(<span class="atom">bess</span>, <span class="atom">dana</span>), <span class="variable">L</span>)<span class="coverage"> 12600 </span>.<span class="comment">
+
+</span><a name="proposition3-1"></a><span class="head">proposition3</span>(<span class="variable">L</span>) <span class="control">:-</span>
+        <span class="coverage"> 12600 </span><a class="call" href="#contains_not-2">contains_not</a>(<span class="functor">likes</span>(<span class="atom">cody</span>, <span class="atom">abby</span>), <span class="variable">L</span>)<span class="coverage"> 5880 </span>.<span class="comment">
+
+</span><a name="proposition4-1"></a><span class="head">proposition4</span>(<span class="head">[]</span>)<span class="coverage"> 100 </span>.<span class="comment">
+</span><span class="head">proposition4</span>([<span class="functor">likes</span>(<span class="variable">A</span>, <span class="variable">A</span>)|<span class="variable">L</span>]) <span class="control">:-</span>
+        <span class="coverage"> 4008 </span><a class="warning" href="file:///opt/eclipse_prolog/doc/bips/kernel/control/I-0.html">!</a>,
+        <span class="coverage"> 4008 </span><a class="call" href="#proposition4-1">proposition4</a>(<span class="variable">L</span>)<span class="coverage"> 212 </span>.<span class="comment">
+</span><span class="head">proposition4</span>([<span class="functor">likes</span>(<span class="variable">A</span>, <span class="variable">B</span>)|<span class="variable">L</span>]) <span class="control">:-</span>
+        <span class="coverage"> 10148 </span><a class="call" href="#contains-2">contains</a>(<span class="functor">likes</span>(<span class="variable">B</span>, <span class="variable">A</span>), <span class="variable">L</span>),
+        <span class="coverage"> 4368 </span><a class="call" href="#remove-3">remove</a>(<span class="functor">likes</span>(<span class="variable">B</span>, <span class="variable">A</span>), <span class="variable">L</span>, <span class="variable">L1</span>),
+        <span class="coverage"> 4368 </span><a class="call" href="#proposition4-1">proposition4</a>(<span class="variable">L1</span>)<span class="coverage"> 276 </span>.<span class="comment">
+
+</span><a name="aux5-2"></a><span class="head">aux5</span>(<span class="variable">_14601</span>, <span class="head">[]</span>)<span class="coverage"> 16 </span>.<span class="comment">
+</span><span class="head">aux5</span>(<span class="variable">L</span>, [<span class="functor">likes</span>(<span class="variable">A</span>, <span class="atom">bess</span>)|<span class="variable">R</span>]) <span class="control">:-</span>
+        <span class="coverage"> 116 </span><a class="warning" href="file:///opt/eclipse_prolog/doc/bips/kernel/control/I-0.html">!</a>,
+        <span class="coverage"> 116 </span><a class="call" href="#contains-2">contains</a>(<span class="functor">likes</span>(<span class="atom">abby</span>, <span class="variable">A</span>), <span class="variable">L</span>),
+        <span class="coverage"> 32 </span><a class="call" href="#aux5-2">aux5</a>(<span class="variable">L</span>, <span class="variable">R</span>)<span class="coverage"> 24 </span>.<span class="comment">
+</span><span class="head">aux5</span>(<span class="variable">L</span>, [<span class="variable">_15848</span>|<span class="variable">R</span>]) <span class="control">:-</span>
+        <span class="coverage"> 420 </span><a class="call" href="#aux5-2">aux5</a>(<span class="variable">L</span>, <span class="variable">R</span>)<span class="coverage"> 96 </span>.<span class="comment">
+
+</span><a name="proposition5-1"></a><span class="head">proposition5</span>(<span class="variable">L</span>) <span class="control">:-</span>
+        <span class="coverage"> 100 </span><a class="call" href="#aux5-2">aux5</a>(<span class="variable">L</span>, <span class="variable">L</span>)<span class="coverage"> 16 </span>.<span class="comment">
+
+</span><a name="aux6-2"></a><span class="head">aux6</span>(<span class="variable">_16804</span>, <span class="head">[]</span>)<span class="coverage"> 4 </span>.<span class="comment">
+</span><span class="head">aux6</span>(<span class="variable">L</span>, [<span class="functor">likes</span>(<span class="atom">bess</span>, <span class="variable">A</span>)|<span class="variable">R</span>]) <span class="control">:-</span>
+        <span class="coverage"> 16 </span><a class="warning" href="file:///opt/eclipse_prolog/doc/bips/kernel/control/I-0.html">!</a>,
+        <span class="coverage"> 16 </span><a class="call" href="#contains-2">contains</a>(<span class="functor">likes</span>(<span class="atom">dana</span>, <span class="variable">A</span>), <span class="variable">L</span>),
+        <span class="coverage"> 4 </span><a class="call" href="#aux6-2">aux6</a>(<span class="variable">L</span>, <span class="variable">R</span>)<span class="coverage"> 4 </span>.<span class="comment">
+</span><span class="head">aux6</span>(<span class="variable">L</span>, [<span class="variable">_18051</span>|<span class="variable">R</span>]) <span class="control">:-</span>
+        <span class="coverage"> 68 </span><a class="call" href="#aux6-2">aux6</a>(<span class="variable">L</span>, <span class="variable">R</span>)<span class="coverage"> 28 </span>.<span class="comment">
+
+</span><a name="proposition6-1"></a><span class="head">proposition6</span>(<span class="variable">L</span>) <span class="control">:-</span>
+        <span class="coverage"> 16 </span><a class="call" href="#aux6-2">aux6</a>(<span class="variable">L</span>, <span class="variable">L</span>)<span class="coverage"> 4 </span>.<span class="comment">
+
+</span><a name="aux7-2"></a><span class="head">aux7</span>(<span class="head">[]</span>, <span class="variable">_19008</span>) <span class="control">:-</span>
+        <span class="coverage"> 50625 </span><a class="warning" href="file:///opt/eclipse_prolog/doc/bips/kernel/control/I-0.html">!</a><span class="coverage"> 50625 </span>.<span class="comment">
+</span><span class="head">aux7</span>([<span class="variable">_E</span>|<span class="variable">_L</span>], <span class="head">[]</span>) <span class="control">:-</span>
+        <span class="coverage"> 14911 </span><a class="builtin" href="file:///opt/eclipse_prolog/doc/bips/kernel/control/fail-0.html">fail</a><span class="nocoverage"> 0 </span>.<span class="comment">
+</span><span class="head">aux7</span>(<span class="variable">P</span>, [<span class="functor">likes</span>(<span class="variable">A</span>, <span class="variable">_19892</span>)|<span class="variable">R</span>]) <span class="control">:-</span>
+        <span class="coverage"> 466913 </span><a class="call" href="#remove-3">remove</a>(<span class="variable">A</span>, <span class="variable">P</span>, <span class="variable">P1</span>),
+        <span class="coverage"> 466913 </span><a class="call" href="#aux7-2">aux7</a>(<span class="variable">P1</span>, <span class="variable">R</span>)<span class="coverage"> 374625 </span>.<span class="comment">
+
+</span><a name="proposition7-1"></a><span class="head">proposition7</span>(<span class="variable">L</span>) <span class="control">:-</span>
+        <span class="coverage"> 65536 </span><a class="call" href="#people-1">people</a>(<span class="variable">P</span>),
+        <span class="coverage"> 65536 </span><a class="call" href="#aux7-2">aux7</a>(<span class="variable">P</span>, <span class="variable">L</span>)<span class="coverage"> 50625 </span>.<span class="comment">
+
+
+% 1.4
+
+</span><a name="possible_worlds-1"></a><span class="head">possible_worlds</span>(<span class="variable">W</span>) <span class="control">:-</span>
+        <span class="coverage"> 1 </span><a class="call" href="#people-1">people</a>(<span class="variable">P</span>),
+        <span class="coverage"> 1 </span><a class="call" href="#make_all_pairs-2">make_all_pairs</a>(<span class="variable">P</span>, <span class="variable">L</span>),
+        <span class="coverage"> 1 </span><a class="call" href="#sub_list-2">sub_list</a>(<span class="variable">L</span>, <span class="variable">W</span>),
+        <span class="coverage"> 65536 </span><a class="call" href="#proposition7-1">proposition7</a>(<span class="variable">W</span>),
+        <span class="coverage"> 50625 </span><a class="call" href="#proposition1-1">proposition1</a>(<span class="variable">W</span>),
+        <span class="coverage"> 27000 </span><a class="call" href="#proposition2-1">proposition2</a>(<span class="variable">W</span>),
+        <span class="coverage"> 12600 </span><a class="call" href="#proposition3-1">proposition3</a>(<span class="variable">W</span>),
+        <span class="coverage"> 5880 </span><a class="call" href="#proposition4-1">proposition4</a>(<span class="variable">W</span>),
+        <span class="coverage"> 100 </span><a class="call" href="#proposition5-1">proposition5</a>(<span class="variable">W</span>),
+        <span class="coverage"> 16 </span><a class="call" href="#proposition6-1">proposition6</a>(<span class="variable">W</span>)<span class="coverage"> 4 </span>.<span class="comment">
+
+% 1.5 : Pas de doublons
+
+% Questions 1.6 and 1.7
+</span><a name="test_possible_worlds-0"></a><span class="head">test_possible_worlds</span> <span class="control">:-</span>
+        <span class="coverage"> 1 </span><a class="call" href="#possible_worlds-1">possible_worlds</a>(<span class="variable">World</span>),
+        <span class="coverage"> 4 </span><a class="builtin" href="file:///opt/eclipse_prolog/doc/bips/kernel/ioterm/writeln-1.html">writeln</a>(<span class="variable">World</span>),
+        <span class="coverage"> 4 </span><a class="builtin" href="file:///opt/eclipse_prolog/doc/bips/kernel/control/fail-0.html">fail</a><span class="nocoverage"> 0 </span>.<span class="comment">
+
+% Déplacer les propositions ne change pas le nombre de réponses mais change l'ordre dans lequel elles apparaissent
+
+% getcwd(Where).
+% cd("/home/nathan/Documents/INSA Rennes 2020-2021/Programmation Logique/TP6").
+% ?- lib(coverage).
+% ?- coverage:ccompile("tp_possible_worlds_students").
+% ?- test_possible_worlds.
+% ?- coverage:result("tp_possible_worlds_students").</span></pre><HR>
+</body></html>

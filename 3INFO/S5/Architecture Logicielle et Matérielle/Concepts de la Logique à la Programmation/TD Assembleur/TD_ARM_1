@@ -1,0 +1,43 @@
+
+.data
+x: 	.word	26
+.align
+
+@ Non initialisé
+@ .bss
+@ x: 	.word
+@ .align
+
+.text
+.global _start
+
+_start:
+	LDR r1,#3
+	LDR r2,#1
+	LDR r0,=x
+	LDR r0,[r0]
+tantque:
+	CMP r0,#1
+	BEQ fait
+	AND r3,r0,#0x1
+	CMP r3,#1
+	BNE sinon
+si: 
+	LSR r0
+	B finsi
+sinon:
+	MUL r0,r0,r1
+	ADD r0,r0,r2
+finsi:
+	B tantque	
+fait:
+	
+	
+
+@tant que x != 1 faire
+@	si x pair alors
+@		x = x/2
+@	sinon  
+@		x = 3x + 1
+@	fsi 
+@fait
