@@ -1,7 +1,9 @@
 
 # Performance models
 
-Operational variables :
+
+## Operational variables
+
  - `T` : Duration of the whole experiment
  - `K` : Number of resources in the system
  - `A_i` : Number of **A**rrivals at resource `i`
@@ -11,7 +13,8 @@ Operational variables :
  - `C_0` : Total number of requests completed by the system
 
 
-Derived variables :
+## Derived variables
+
  - `S_i = B_i / C_i` : **S**ervice time per completion at resource `i`
  - `λ_i = A_i / T` : Arrival rate at resource `i`
  - `U_i = B_i / T` : **U**tilisation of resource `i`
@@ -22,8 +25,11 @@ Derived variables :
 
 *Note : the bottleneck of the system is the resource with the highest utilisation*
 
+We reach flow balance when `X = λ`
 
-Operational laws :
+
+## Operational laws
+
  - Utilisation law : `U_i = S_i * X_i`
  - Forced flow law : `X_i = V_i * X_0`
  - Service demand law : `D_i = U_i / X_0`
