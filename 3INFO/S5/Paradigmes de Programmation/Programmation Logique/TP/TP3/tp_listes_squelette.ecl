@@ -232,9 +232,10 @@ union_ens([A|X], Y, [A|Z]) :-
 	union_ens(X, Y, Z).
 
 
-% 2.2 ==> ???
+% 2.2 ==> solved
 
-inclus2([], Y).
-inclus2([A|X], Y):-
-	membre(A, Y),
-	inclus(X, Y).
+inclus2([], _).
+inclus2([X|Xs], Y) :-
+    append(L, [X|R], Y),
+    append(L, R, Y1),
+    inclus2(Xs, Y1).
