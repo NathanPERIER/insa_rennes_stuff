@@ -23,9 +23,9 @@
  - `V_i = C_i / C_0` : Average number of **v**isits per requests to resource `i`
  - `D_i = V_i * S_i` : Service **D**emand at resource `i`
 
-*Note : the bottleneck of the system is the resource with the highest utilisation*
+*Note : the bottleneck of the system is the resource with the highest utilisation (or demand since the demand is proportional to the utilisation as we will see in the next part*
 
-We reach flow balance when `X = λ`
+We say that there is flow balance when `X = λ`
 
 
 ## Operational laws
@@ -44,9 +44,13 @@ We reach flow balance when `X = λ`
 
 Throughput bounds : `X_0 <= min(1/max({D_i}), N/sum({D_i}))`
 
+*Notes : U_i <= 1, R >= sum({D_i})*
+
 Response time bounds : `R => max(N*max({D_i}), sum({D_i}))`
 
 Where `N` is the number of concurrent requests
+
+
 
 
 
