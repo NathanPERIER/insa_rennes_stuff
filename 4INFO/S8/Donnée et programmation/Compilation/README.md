@@ -3,6 +3,8 @@
 
 ## Analyseurs Syntaxiques Descendants
 
+**Objectif** : A partir d'une grammaire sans récursivité à gauche, construire un analyseur syntaxique prédictif sans backtracking
+
 Nous prendrons ici l'exemple de la grammaire suivante permettant de consturire des calculs arithmétiques en notation préfixe :
 
 ```
@@ -30,7 +32,7 @@ Exemple :
 Soit `X ∈ V_n` :
  - `First(ε) = {}`
  - `First(aβ) = {a}`, `a ∈ V_t`
- - `First(X) = ∪ [x -> β] (First(β))`
+ - `First(X) = ∪ [X -> β] (First(β))`
  - `¬Null(X) => First(Xβ) = First(X)`
  - ` Null(X) => First(Xβ) = First(X) ∪ First(B)`
 
