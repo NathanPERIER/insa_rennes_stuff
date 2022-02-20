@@ -1,0 +1,12 @@
+[submodule "4INFO/S8/Ouverture/Programmation Mobile/S08-PM"]
+	path = 4INFO/S8/Ouverture/Programmation Mobile/S08-PM
+	url = https://git.vulpinecitrus.info/Lymkwi/S08-PM
+[submodule "4INFO/S8/Donnée et programmation/Compilation/S08-COMPIL"]
+	path = 4INFO/S8/Donnée et programmation/Compilation/S08-COMPIL
+	url = https://git.vulpinecitrus.info/Lymkwi/S08-COMPIL
+[submodule "4INFO/S8/Donnée et programmation/Programmation par Contraintes/S08-CLP"]
+	path = 4INFO/S8/Donnée et programmation/Programmation par Contraintes/S08-CLP
+	url = https://git.vulpinecitrus.info/Lymkwi/S08-CLP
+[submodule "4INFO/S8/Donnée et programmation/Grammaires et Langages/S08-LANG"]
+	path = 4INFO/S8/Donnée et programmation/Grammaires et Langages/S08-LANG
+	url = https://git.vulpinecitrus.info/Lymkwi/S08-LANG
