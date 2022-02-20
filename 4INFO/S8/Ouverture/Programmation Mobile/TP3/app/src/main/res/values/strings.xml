@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">PM - TP3</string>
+    <string name="add">Add</string>
+    <string name="edit.name">Name</string>
+    <string name="edit.duration">Duration (min)</string>
+    <string name="edit.category">Category</string>
+    <string name="edit.description">Description</string>
+    <string name="placeholder.name">name</string>
+    <string name="placeholder.duration">duration</string>
+    <string name="placeholder.description">description</string>
+    <string name="button.add">Add</string>
+    <string name="confirm.message">Are you sure you want to delete this task ?</string>
+    <string name="confirm.ok">OK</string>
+    <string name="confirm.cancel">Cancel</string>
+</resources>
