@@ -1,0 +1,48 @@
+/*
+
+CREATE TABLE Etudiant (
+    etudId VARCHAR(3) PRIMARY KEY,
+    nom VARCHAR(30),
+    prenom VARCHAR(30)
+);
+
+CREATE TABLE Professeur (
+    profId VARCHAR(3) PRIMARY KEY,
+    nom VARCHAR(30),
+    prenom VARCHAR(30)
+);
+
+CREATE TABLE Enseignement (
+    ensId VARCHAR(3) PRIMARY KEY,
+    sujet VARCHAR(50)
+);
+
+CREATE TABLE EnseignementSuivi (
+    ensId VARCHAR(3),
+    etudId VARCHAR(3),
+    profId VARCHAR(3),
+    PRIMARY KEY (ensId, etudId, profId)
+);
+
+*/
+
+
+/* Q5
+SELECT nom, prenom FROM Etudiant;
+SELECT nom, prenom FROM Professeur WHERE nom LIKE '%A%';
+SELECT etudID, profId from Etudiant, Professeur;
+*/
+
+/* Q6
+PRAGMA page_size;
+*/
+
+/* Q7
+explain query plan SELECT nom, prenom FROM Etudiant;
+-> Juste un scan complet de la table
+explain query plan SELECT nom, prenom FROM Professeur WHERE nom LIKE '%A%';
+-> Scan complet de la table + selection
+explain query plan SELECT etudID, profId from Etudiant, Professeur;
+-> Scan des deux tables en utilisant des autoindex sur les clefs + produit cartésien
+*/
+

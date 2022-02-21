@@ -1,0 +1,10 @@
+/*
+sqlite3 test1 < database1.sql
+*/
+
+/* Q7
+ELECT c.name FROM customer c, facture f WHERE f.customerId=c.customerId AND f.amount>999;
+SELECT name FROM customer WHERE customerId IN (SELECT f.customerId FROM facture f WHERE amount>999);
+SELECT name FROM (customer NATURAL JOIN facture) WHERE amount>999;
+SELECT name FROM customer WHERE customerId IN (SELECT c.customerId FROM customer c, facture f WHERE c.customerId=f.customerId AND f.amount>999);
+*/

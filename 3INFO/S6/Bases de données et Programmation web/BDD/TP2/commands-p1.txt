@@ -1,0 +1,50 @@
+
+/* Q1
+.timer ON
+SELECT * FROM demo WHERE code=56002249;
+SELECT * FROM demo WHERE code=81909454;
+SELECT * FROM demo WHERE code=7029650;
+SELECT * FROM demo WHERE code=11257390;
+SELECT * FROM demo WHERE code=93315466;
+0,55 - 0,90 s
+*/
+
+/* Q2
+.timer ON
+SELECT * FROM demo WHERE code=10000;
+SELECT * FROM demo WHERE code=100000;
+0,66 s
+*/
+
+/* Q3
+.timer ON
+SELECT * FROM demo WHERE code>7000000;
+SELECT * FROM demo WHERE code>11000000;
+SELECT * FROM demo WHERE code>90000000;
+SELECT * FROM demo WHERE code>20000000;
+SELECT * FROM demo WHERE code>100000;
+0,37 - 3,14 s
+*/
+
+/* Q4
+explain query plan SELECT * FROM demo WHERE code=56002249;
+explain query plan SELECT * FROM demo WHERE code=100000;
+explain query plan SELECT * FROM demo WHERE code>56002249;
+-> scan de toute la table à chaque fois
+*/
+
+/* Q5
+CREATE INDEX demoIDX ON demo(code);
+*/
+
+/* Q6
+Sélection = : ordre de 0,001 s
+Sélection > : change pas beaucoup, coût des I/O 
+-> utilisation de l'index à chaque fois
+*/
+
+
+
+
+
+
