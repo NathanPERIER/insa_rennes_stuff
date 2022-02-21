@@ -1,0 +1,124 @@
+Nathan PERIER - 3INFO G1.1
+
+Q1.	Le hostname (nom de la machine) est tp-reseau
+	L'adresse IP de la machine est 192.168.1.97
+
+Q2.	On a deux interfaces réseau
+	 - lo : MTU 65536
+	 - enp0s3 : MTU 1500
+
+Q3.	root@tp-reseau:~# ip r
+	default via 192.168.1.254 dev enp0s3 proto dhcp metric 100
+	168.254.0.0/16 dev enp0s3 scope link metric 1000
+	192.168.1.0/24 dev enp0s3 kernel scope link src 192.168.1.97 metric 100
+	
+	On voit qu'on sort sur internet sur l'IP 192.168.1.254 via l'interface enp0s3
+
+Q4.	Sur ma machine personnelle j'ai : 
+	 - Hostname : hms-burnt-ember
+	 - Adresse IP : 192.168.1.94
+	 - Nombre d'interfaces réseau : 3
+		 - lo : MTU 65536
+		 - enp2s0 : MTU 1500
+		 - docker0 : MTU 1500
+	 - Table de routage : 
+		nathan@hms-burnt-ember:~$ ip -c r
+		default via 192.168.1.254 dev enp2s0 proto dhcp metric 100 
+		169.254.0.0/16 dev enp2s0 scope link metric 1000 
+		172.17.0.0/16 dev docker0 proto kernel scope link src 172.17.0.1 linkdown 
+		192.168.1.0/24 dev enp2s0 proto kernel scope link src 192.168.1.94 metric 100
+	
+	 On voit que les deux machines ont la même interface lo (interface de loopback, sert à communiquer avec soi-même)
+	 Elles sont également le même point de sortie vers Internet qui est 192.168.1.254 (adresse de la box internet sur le réseau local)
+
+Q5.	 root@tp-reseau:~# ip n
+	 192.168.1.254 dev enp0s3 lladdr 28:9e:fc:e1:84:fc REACHABLE
+
+Q6.  On lance wireshark via la commande wireshark.
+
+Q7.	 On lance la capture sur wireshark.
+
+Q8.	 root@tp-reseau:~# ping 192.168.1.5
+
+Q9.  On stoppe la capture.
+
+Q10. On voit avec wireshark qu'une requête ARP comporte dans l'ordre : 
+	  - Type de harware, ici ethernet (2 octets)
+	  - Type de protocole, ici IPv4 (2 octets)
+	  - Taille en octets des adresses hardware, ici on a des adresses MAC donc 6 (1 octet)
+	  - Taille en octets des adresses du protocole, ici on est en IPv4 donc 4 (1 octet)
+	  - Opcode servant à définir l'opération demandée (2 octets)
+	  - MAC de l'envoyeur (6 octets)
+	  - Adresse IPv4 de l'envoyeur (4 octets)
+	  - MAC cible (6 octets)
+	  - IP cible (4 octets)
+
+Q11. On a un exemple d'un échange ARP entre 192.168.1.97 et 192.168.1.5 : 
+	 Tout d'abord 192.168.1.5 (adresse MAC dc:a6:32:d9:4e:f0) demande à connaître la MAC de 192.168.1.97
+	 192.168.1.97 répond alors à 192.168.1.5 que sa MAC est 08:00:27:d8:b5:24
+	
+Q12. On voit avec wireshark qu'une requête ICMP comporte dans l'ordre :
+	  - Type de requête (1 octet)
+	  - Code (1 octet)
+	  - Checksum pour vérifier l'intégrité du message (2 octets)
+	  - Un identifiant (2 octets)
+	  - Un numéro de séquence (2 octets)
+	  - Un timestamp qui idique l'heure à laquelle les données ont été envoyées (8 octets)
+	  - Des données, ici une suite de chiffres sans importance puisqu'il s'agit d'un ping (48 octets)
+
+Q13. On voit déjà que les codes sont différents : on a 8 pour une requête de ping et 0 pour une réponse de ping. Le checksum change, ce qui est évident étant donné que les deux messages sont différents, en revanche on constate que les l'identifiant, le numéro de séquence et le timestamp sont les mêmes. Enfin, les données sur 48 octets sont les mêmes dans les deux cas, ce qui est normal.
+
+Q14. On voit que le paquet IP est fragmenté car le flag "More fragments" est à 1. Le paquet observé est le premier fragment car l'offset est à 0. La taille totale du paquet est de 1500 octets, dont 1480 octets "utiles" pour la requête ping. Il reste donc 520 octets à envoyer.
+
+Q15. On voit que le second fragment n'est pas le premier car il a un offset de 1480, correspondant aux données "utiles" mentionnées dans la Q14. Il n'y a pas d'autres fragments car le flag "More fragments" est à 0.
+
+Q16. Les champs de l'entête IP qui changent sont la taille totale du paquet, les flags, l'offset et le checksum.
+
+Q17. Le fichier /etc/services contient les numéros de ports TCP et UDP. On a entre autres les ervices suivants : 
+	  - ssh sur le port 22 (TCP)
+	  - telnet sur le port 23 (TCP)
+	  - smtp sur le port 25 (TCP)
+	  - http sur le port 80 (TCP)
+	  - sftp sur le port 115 (TCP)
+	  - https sur le port 443 (TCP)
+
+Q18. On voit de nombreuses connections HTTP ou HTTPS ouvertes en TCP.
+
+Q19. Voici les résultats de la commande ping sur les trois arguments : 
+	  - www.google.com : 14.7 ms
+	  - www.nust.na : 217.4 ms
+	  - www.victoria.ac.nz : 13.2 ms
+	 On en déduit que ... (?)
+
+Q20. A l'aide de la commande traceroute -I on voit que la connection vers www.google.com passe par 9 machines différentes, pour www.victoria.ac.nz on a 7 machines et pour www.nust.na 18 machines. On voit bien que la latence entre le client et le serveur dépend de la longueur du chemin parcouru par les paquets.
+
+Q21. A l'aide des commandes host, nslookup et dig, on voit que : 
+	  - www.free.fr a l'adresse IPv4 212.27.48.10 et l'adresse IPv6 2a01:e0c:1::1, qui sont associées au nom d'hôte www.free.fr
+	  - www.insa-rennes.fr a l'adresse IPv4 193.52.94.51, qui est associée au nom d'hôte hebergwebtypo01.insa-rennes.fr (dont www.insa-rennes.fr est un alias)
+
+Q22. Le port de destination est le port 80 qui est le port dédié au HTTP (comme on pouvait s'y attendre pour une requête HTTP).
+
+Q23. La taille de l'entête TCP pour ce segment est de 40 octets.
+
+Q24. La taille du segment TCP est de 0 octets car le SYN ne transmet pas de données.
+
+Q25. Le numéro de séquence du premier paquet est 3211601035 (0xBF6D248B). Le client annonce une fenêtre TCP de taille 64256 octets, il s'agit de la taille maximale des segments qu'il peut recevoir sans les acquitter (et donc la taille maximale des données que le serveur peut envoyer avant d'attendre un acquittement).
+
+Q26. Pour le deuxième paquet du three-way handshake on a : 
+	  - Dans la trame Ethernet : la source est 28:9e:fc:e1:84:fc, la destination est 08:00:27:d8:b5:24 et la type de protocole est IPv4 (0x0800)
+	  - Dans le paquet IP : la source est 208.97.177.124, la destination est 192.168.1.97, le numéro du protocole est 6 pour TCP
+	  - Dans le segment TCP : le numéro d'acquittement est 1504098537 (0x59A6B8E9), la taille du segment TCP est de 0 octets, la numéro de séquence initial est 235901504 (0x0E0F9240) et la fenêtre TCP annoncée par le serveur est de 29200 octets
+
+Q27. Le Maximum Segement Size correspond à la taille du plus grand segment qu'il est possible d'envoyer, on peut le calculer en soustrayant la taille des headers au MTU. Wireshark nous indique que le MSS est de 1460 octets pour le client et pour le serveur.
+
+Q28. Dans le dernier segment TCP du three-way handshake : 
+	  - Le numéro d'acquittement est 3873415693 (0xE6DFA20D)
+	  - La taille de la fenêtre TCP est de 64256 octets
+
+Q29. On remarque que pour chaque segment, le numéro de séquence correspond au dernier numéro de séquence envoyé auquel on a ajouté la taille du dernier payload envoyé. Le numéro d'acquittement correspond au dernier numéro de séquence reçu auquel on a ajouté la taille du dernier payload non acquitté reçu (si les numéros de séquence sont bien dans la continuité des numéros précédents). 
+
+Q30. La taille des données applicatives du HTTP 200 OK est de 163 octets.
+
+Q31. Si le contenu de la réponse HTTP est trop gros, on voit que les données sont fragmentées au niveau de TCP. En effet on a plusieurs segments TCP, chacun contenu dans un paquet IP où le flag "More fragments" est à 0, ce qui indique que c'est bien TCP qui décide de fragmenter les données si besoin et pas IP qui fragmente les segments TCP en plusieurs paquets.
+
+	
