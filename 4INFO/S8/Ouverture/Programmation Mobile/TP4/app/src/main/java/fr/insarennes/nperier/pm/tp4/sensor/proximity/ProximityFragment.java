@@ -19,10 +19,13 @@ import fr.insarennes.nperier.pm.tp4.sensor.SensorUpdate;
 
 public class ProximityFragment extends Fragment implements SensorUpdate {
 
+    private final static float THRESHOLD = 2.0f;
+
     @Injector.ViewChild public TextView distanceText;
 
     private MediaPlayer mp;
     private long lastUpdate;
+    private boolean triggered;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater linfl, ViewGroup vgroup, Bundle bundle) {
@@ -33,6 +36,8 @@ public class ProximityFragment extends Fragment implements SensorUpdate {
         lastUpdate = System.currentTimeMillis();
 
         mp = MediaPlayer.create(this.getContext(), R.raw.sabreclash);
+
+        triggered = false;
 
         return v;
     }
@@ -45,8 +50,11 @@ public class ProximityFragment extends Fragment implements SensorUpdate {
 
         long curTime = System.currentTimeMillis();
         if ((curTime - lastUpdate) > 100L) {
-            if (d < 8.0) {
+            if (d < THRESHOLD && !triggered) { // Trigger only once and wait for the obstacle to move away
                 mp.start();
+                triggered = true;
+            } else if(d > THRESHOLD) {
+                triggered = false;
             }
             lastUpdate = curTime;
         }

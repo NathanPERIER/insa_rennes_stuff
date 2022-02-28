@@ -133,12 +133,16 @@ public class SensorActivity extends FragmentActivity implements SensorEventListe
     @Override
     protected void onResume() {
         super.onResume();
-        sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+        if(UPDATERS.containsKey(sensor.getType())) {
+            sm.registerListener(this, sm.getDefaultSensor(sensor.getType()), SensorManager.SENSOR_DELAY_NORMAL);
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        sm.unregisterListener(this);
+        if(UPDATERS.containsKey(sensor.getType())) {
+            sm.unregisterListener(this);
+        }
     }
 }
