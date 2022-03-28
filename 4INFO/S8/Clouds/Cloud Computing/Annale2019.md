@@ -13,11 +13,11 @@ Inconvénients par rapport aux clouds publics :
 
 ## Question 2
 
-La virtualisation est importante pour le cloud car elle permet de séparer les taĉhes qui tournent dans des machines virtuelles différentes et ainsi contrôler les ressources qui leurs sont attribuées. 
+La virtualisation est importante pour le cloud car elle permet de séparer les taĉhes qui tournent dans des machines virtuelles différentes et ainsi contrôler les ressources qui leurs sont attribuées (+ isolation). 
 
-Si on travaille avec des données qui arrivent en continu (e.g. stream processing), la virtualisation permet également de démarrer ou d'arrêter de nouvelles machines virtuelles pour s'adapter à la demande. 
+Si on travaille avec des données qui arrivent en continu (e.g. stream processing), la virtualisation permet également de démarrer ou d'arrêter de nouvelles machines virtuelles pour s'adapter à la demande (scalability). 
 
-Enfin, cela permet de faire des migrations à chaud où une application qui tourne sur une machine physique est transférée sur une autre machine physique et continue son traitement avec peu ou pas d'effets de bord visibles.
+Enfin, cela permet de faire des migrations à chaud où une application qui tourne sur une machine physique est transférée sur une autre machine physique et continue son traitement avec peu ou pas d'effets de bord visibles (+ snapshots).
 
 ## Question 3
 
@@ -29,19 +29,19 @@ En ce qui concerne les conteneurs, ils ne sont pas affectés non plus car ce son
 
 ## Question 4
 
-1. Pour un backend stateless, un serveur physique peut suffire mais l'idéal serait quand même d'utiliser des conteneurs afin de pouvor auto-scale en fonction de la demande.
+1. Pour un backend stateless, utiliser des conteneurs afin de pouvoir auto-scale en fonction de la demande.
 
-2. Comme il est nécessaire d'avoir des versions spécifiques de la JVM, on peut utiliser une machine virtuelle avec tous les composants déjà intégrés.
+2. Comme il est nécessaire d'avoir des versions spécifiques de la JVM, on peut utiliser un conteneur (image avec la bonne version).
 
-3. Puisque l'application est critique, on peut utiliser des conteneurs pour l'application et la base de données. Cela permettra d'auto-scale et de faire de la migration à chaud très rapidement.
+3. Puisque l'application est critique, il faut utiliser une machine virtuelle pour pouvoir snapshot.
 
 ## Question 5
 
-L'"energy proportionality" est une mesure de l'énergie consommée par un serveur en fonction de son utilisation. Idéalement, l'énergie consommée par un serveur serait strictement proportionnelle à son utilisation, et donc il ne consommerait presque rien au repos. On sait cependat que ce n'est pas vrai et un serveur au repose consomme au moins 50% de l'énergie consommée à pleine charge.
+L'"energy proportionality" est une mesure de l'énergie consommée par un serveur en fonction de son utilisation. Idéalement, l'énergie consommée par un serveur serait strictement proportionnelle à son utilisation, et donc il ne consommerait presque rien au repos. On sait cependant que ce n'est pas vrai et un serveur au repose consomme au moins 50% de l'énergie consommée à pleine charge.
 
 ## Question 6
 
-L'avantage des instances EC2 est qu'il est possible de faire de l'auto scaling et de la tolérence aux pannes selon les règles qu'on définit
+L'avantage des instances EC2 est qu'il est possible de faire de l'auto scaling et de la tolérence aux pannes selon les règles qu'on définit. On ne paye que pour le temps d'utilisation du serveur.
 
 L'inconvénient est qu'il faut parfois attendre pour avoir certaines ressources (selon le prix des instances)
 
@@ -81,5 +81,5 @@ C'est le cas par ce que le temps de réponse n'est pas linéairement proportionn
 
 En FaaS, les fonctions sont appelées dès qu'une action est effectuée, donc l'auto-scaling est automatique dû au fait que chaque action génère la création d'un nouveau conteneur, qui s'arrête ensuite dès qu'il a fini (modulo le warm start).
 
-En PaaS, la création ou la destruction de nouveaux conteneurs n'a lieu que quand c'est nécessaire, selon des règles qui sont définies à l'avance (seuil d'utilisation, ...).
+En IaaS, la création ou la destruction de nouveaux conteneurs n'a lieu que quand c'est nécessaire, selon des règles qui sont définies à l'avance (seuil d'utilisation, ...).
 
