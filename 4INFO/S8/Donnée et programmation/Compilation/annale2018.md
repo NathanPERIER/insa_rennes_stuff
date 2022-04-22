@@ -45,64 +45,93 @@ F  -> int | ident
 ## Exercice 2
 
 ```
-Goal -> List
-List -> List Pair
-List -> Pair
-Pair -> ( Pair )
-Pair -> ( )
+(1) Goal -> List
+(2) List -> List Pair
+(3) List -> Pair
+(4) Pair -> ( Pair )
+(5) Pair -> ( )
 ```
 
 ### Question 4
 
-*Note : this is probably false, but I think there is something I don't understand with the 'follows'*
-
-If you don't see a diagram below, paste the code here : https://mermaid.live/edit
+*If you don't see a diagram below, paste the code [here](https://mermaid.live/edit)*
 
 ```Mermaid
 stateDiagram-v2
 	s01: 1
 	s01: Goal -> • List, $
-	s01: List -> • List Pair, ( / )
-	s01: List -> • Pair, ( / )
-	s01: Pair -> • ( Pair ), ( / )
-	s01: Pair -> • ( ), ( / )
+	s01: List -> • List Pair, $ / (
+	s01: List -> • Pair, $ / (
+	s01: Pair -> • ( Pair ), $ / (
+	s01: Pair -> • ( ), $ / (
 	s02: 2
-	s02: List -> Pair •, ( / )
+	s02: List -> Pair •, $ / (
 	s03: 3
-	s03: Pair -> ( • Pair ), ( / )
-	s03: Pair -> ( • ), ( / )
-	s03: Pair -> • ( Pair ), ( / )
-	s03: Pair -> • ( ), ( / )
+	s03: Pair -> ( • Pair ), $ / (
+	s03: Pair -> ( • ), $ / (
+	s03: Pair -> • ( Pair ), )
+	s03: Pair -> • ( ), )
 	s04: 4
-	s04: Pair -> ( ) •, ( / )
+	s04: Pair -> ( ) •, $ / (
 	s05: 5
-	s05: Pair -> ( Pair • ), ( / )
+	s05: Pair -> ( Pair • ), $ / (
 	s06: 6
-	s06: Pair -> ( Pair ) •, ( / )
+	s06: Pair -> ( Pair ) •, $ / (
 	s07: 7
-	s07: Goal -> List •, $
-	s07: List -> List • Pair, ( / )
-	s07: Pair -> • ( Pair ), ( / )
-	s07: Pair -> • ( ), ( / )
+	s07: Pair -> ( • Pair ), )
+	s07: Pair -> ( • ), )
+	s07: Pair -> • ( Pair ), )
+	s07: Pair -> • ( ), )
 	s08: 8
-	s08: List -> List Pair •, ( / )
+	s08: Pair -> ( ) •, )
+	s09: 9
+	s09: Pair -> ( Pair • ), )
+	s10: 10
+	s10: Pair -> ( Pair ) •, )
+	s11: 11
+	s11: Goal -> List •, $
+	s11: List -> List • Pair, $ / (
+	s11: Pair -> • ( Pair ), $ / (
+	s11: Pair -> • ( ), $ / (
+	s12: 12
+	s12: List -> List Pair •, $ / (
+	[*] --> s01
 	s01 --> s02 : Pair
 	s01 --> s03 : (
-	s03 --> s03 : (
 	s03 --> s04 : )
 	s03 --> s05 : Pair
 	s05 --> s06 : )
-	s01 --> s07 : List
-	s07 --> s08 : Pair
+	s03 --> s07 : (
+	s07 --> s07 : (
+	s07 --> s08 : )
+	s07 --> s09 : Pair
+	s09 --> s10 : )
+	s01 --> s11 : List
+	s11 --> s12 : Pair
+	s11 --> s03 : (
+	s11 --> [*]
 ```
 
 ### Question 5
 
-Not sure what the parser is...
+|    | `(`      | `)`      | `$`      | `List` | `Pair` |
+|----|----------|----------|----------|--------|--------|
+|  1 | shift 3  |          |          |     11 |      2 |
+|  2 | reduce 3 |          | reduce 3 |        |        |
+|  3 | shift 7  | shift 4  |          |        |      5 |
+|  4 | reduce 5 |          | reduce 5 |        |        |
+|  5 |          | shift 6  |          |        |        |
+|  6 | reduce 4 |          | reduce 4 |        |        |
+|  7 | shift 7  | shift 8  |          |        |      9 |
+|  8 |          | reduce 5 |          |        |        |
+|  9 |          | shift 10 |          |        |        |
+| 10 |          | reduce 4 |          |        |        |
+| 11 | shift 3  |          | accept   |        |     12 |
+| 12 | reduce 2 |          | reduce 2 |        |        |
 
 ### Question 6
 
-The grammar is porbably not LR(1) because when we reach the end of the axiom in question 4 (`Goal -> List •`, node 7), there are still other rules and they haven't even been fully processed (e.g. `List -> List • Pair`).
+The grammar is porbably not LR(1) because when we reach the end of the axiom in question 4 (`Goal -> List •`, node 11), there are still other rules and they haven't even been fully processed (e.g. `List -> List • Pair`).
 
 
 ## Exercice 3
