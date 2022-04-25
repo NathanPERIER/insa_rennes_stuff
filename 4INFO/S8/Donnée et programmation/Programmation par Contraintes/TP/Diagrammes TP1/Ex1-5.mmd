@@ -1,0 +1,43 @@
+stateDiagram-v2
+	s0: commande(X, Y)
+	s1: isBetween(X, 5000, 10000), isBetween(Y, 9000, 20000), X >= Y
+	s2: 5000 =< 10000, isBetween(Y, 9000, 20000), 5000 >= Y
+	s3: isBetween(Y, 9000, 20000), 5000 >= Y
+	s4: 9000 =< 20000, 5000 >= 9000
+	s5: 5000 >= 9000
+	s6: fail
+	s7: 9000 =< 20000, Min1 is 9000+1, isBetween(Y, Min1, 20000), 5000 >= Y
+	s8: Min1 is 9000+1, isBetween(Y, Min1, 20000), 5000 >= Y
+	s9: isBetween(Y, 9001, 20000), 5000 >= Y
+	s10: 9001 =< 20000, 5000 >= 9001
+	s11: 5000 >= 9001
+	s12: fail
+	s13: ...
+	s14: 5000 =< 10000, Min1 is 5000+1, isBetween(X, Min1, 10000), isBetween(Y, 9000, 20000), X >= Y
+	s15: Min1 is 5000+1, isBetween(X, Min1, 10000), isBetween(Y, 9000, 20000), X >= Y
+	s16: isBetween(X, 5001, 10000), isBetween(Y, 9000, 20000), X >= Y
+	s17: 5001 =< 10000, isBetween(Y, 9000, 20000), 5001 >= Y
+	s18: isBetween(Y, 9000, 20000), 5001 >= Y
+	s19: ...
+	s20: ...
+	s0 --> s1
+	s1 --> s2 : X = 5000
+	s2 --> s3
+	s3 --> s4 : Y = 9000
+	s4 --> s5
+	s5 --> s6
+	s3 --> s7
+	s7 --> s8
+	s8 --> s9 : Min1 = 9001
+	s9 --> s10 : Y = 9001
+	s10 --> s11
+	s11 --> s12
+	s9 --> s13
+	s1 --> s14
+	s14 --> s15
+	s15 --> s16 : Min1 = 5001
+	s16 --> s17 : X = 5001
+	s17 --> s18
+	s18 --> s19
+	s16 --> s20
+
