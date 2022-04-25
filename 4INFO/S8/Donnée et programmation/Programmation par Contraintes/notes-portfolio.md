@@ -1,5 +1,83 @@
 # Portfolio
 
+## Partie cours
+
+### Problème de satisfaction de contraintes (CSP)
+
+Un problème à satisfaction de contraintes `<X, D, C>` est consistué de trois ensembles finis :
+ - `X = {X1, X2, ..., Xn}` l'ensemble des variables du problème
+ - `D = {D1, D2, ..., Dn}` l'ensemble des domaines de ces variables (i.e. chaque variable `Xi` doit prendre une valeur dans `Di`)
+ - `C` l'ensemble des contraintes qui sont des règles réduisant le nombre de possibilités sur les valeurs que peuvent prendre les variables
+
+On définit une évaluation des variables comme une fonction qui à tout élément `Xi` de `X` associe une unique valeur dans `Di`. Une solution du problème est une évaluation qui satisfait l'ensemble des contraintes de `C`.
+
+L'objectif du problème peut être de trouver une solution quelconque, une solution optimale, l'ensemble des solutions ou de déterminer s'il existe ou non des solutions.
+
+### Défis des problèmes à contraintes
+
+Ces problèmes sont très souvent NP-complets, donc on n'a à priori pas d'algorithmes qui permet de les résoudre en un temps raisonnable dans tous les cas. Cela ne signifie pas pour autant que la recherche sera nécessairement en temps exponentiel, c'est vrai dans le pire des cas mais on peut essayer de trouver des stratégies pour aller plus vite. 
+
+Le temps de résolution (pour une taille de problème donnée) va dépendre de différents paramètres, qui peuvent être adaptés afin de résoudre les problèmes plus rapidement :
+ - L'ordre dans lequel les variables sont traitées
+ - L'ordre dans lequel les contraintes sont traitées
+ - L'ordre dans lequel les valeurs du domaine sont essayées
+
+Il n'y a cependant pas de méthode générale pour trouver les bonnes heuristiques à utiliser, il faut réfléchir au cas par cas.
+
+L'ajout de contraintes redondantes peut également accélérer la recherche car certaines valeurs seront éliminées plus rapidement.
+
+Il est à noter que si les points évoqués ci-dessus ont une influence sur la vitesse à laquelle on est capable de résoudre le problème, les solutions que l'on va obtenir à la fin seront les mêmes.
+
+Un autre aspect des problèmes à contraintes auquel il faut être vigilent est la présence de symétries dans la structure du problème. S'il en existe, alors on va passer de temps à chercher des solutions qui n'apportent pas d'informations en plus. Par exemple, si on a un problème de la forme `P = A + B` (où `A` et `B` ont les mêmes contraintes) et qu'on trouve la solution `A=1, B=2`, alors `A=2, B=1` est aussi une solution. Pour éviter de passer du temps à énumérer des solutions redondantes, on peut poser des contraintes supplémentaires qui vont supprimer les symétries.
+
+### De «Generate and Test» à «Constraint and Generate»
+
+En Prolog de base, on va essayer toutes les valeurs possibles dans l'ordre jusqu'à tomber sur une solution. Ce n'est pas très efficace et peut s'avérer très long en fonction du nombre de variables et de la taille du problème. On va donc essayer d'utiliser les contraintes pour parcourir l'espace de recherche plus efficacement en éliminant d'abord les valeurs impossibles, puis enitérant sur ce qu'il reste.
+
+Quand on pose une contrainte, on va tout d'abord propager cette contrainte pour réduire les domaines des variables. Quand toutes les contraintes sont propagées, on va essayer d'attribuer une valeur à chaque variable afin de constituer une évaluation. À chaque attribution de valeur (étiquetage), on continue de propager les contraintes pour réduire encore plus les domaines des variables. Si le domaine d'une variable devient vide, alors la solution est invalide et on utilise le backtracking pour la supprimer de l'espace de recherche. Si on parvient à réduire le domaine de chaque variable à une seule valeur après application de toutes les contraintes, alors on a trouvé une solution au problème.
+
+Les algorithmes suivants peuvent être utilisés pour propager les contraintes
+
+#### Cohérence de noeuds
+
+La cohérence de noeuds consiste à utiliser une contrainte portant sur une unique variable pour en réduire le domaine. Pour cela, on va prendre chaque valeur du domaine de la variable et ne garder que celles qui satisfont la contrainte. Il est à noter que le domaine est un ensemble fini de valeurs à une dimension.
+
+Plus précisément, on dit qu'une contrainte `c` de `C` est cohérente par noeuds avec un domaine `D` si elle ne fait intervenir qu'une seule variable `x` et que pour tout `d` dans `D(x)`, l'assignation de `d` à `x` est une solution de `c`.
+
+#### Cohérence d'arcs
+
+La cohérence d'arcs ressemble à la cohérence de noeuds mais sur des contraintes binaires. On ne travaille donc à présent sur un espace fini en deux dimensions, dont on va tester chacune des valeurs pour déterminer lesquelles sont à garder. 
+
+On peut généraliser cette idée avec la cohérence d'hyperarcs (ou cohérence d'arcs généralisée) qui travaille avec des contraintes `n`-aires (`n > 2`). Il est cependant à noter que c'est une approche qui est côuteuse en temps (NP-difficile) et qui va demander de stocker de grands domaines (puisqu'on travaille avec des ensembles à `n` dimensions).
+
+#### Cohérence de bornes
+
+La cohérence de bornes est un compromis, dans le sens où on ne vas pas supprimer toutes les valeurs incohérentes, mais on va tout de même garantir qu'on ne perd pas de solutions. En effet, on ne travaille plus sur des ensembles mais sur des intervalles, ce qui signifie qu'il n'y a plus qu'a stocker la borne inférieure et la borne supérieure des domaines au lieu d'énumérer chaque valeur possible. Cela signifie aussi qu'on ne peut travailler qu'avec des valeurs numériques et qu'on ne peut pas supprimer des valeurs incohérentes au milieu des domaines, ce sera fait lors de la phase de test. Pour trouver les bornes des intervalles, on utilise des propriétés sur les opérations arithmétiques.
+
+#### Cohérence spécialisée
+
+Pour certaines contraintes que l'on appelle contraintes globales, les méthodes ci-dessus ne suffisent pas nécessairement et il est plus intéressant de créer des méthodes de cohérence spécialisées pour traiter ces cas. Par exemple si on veut que trois vairables `X`, `Y` et `Z` soient différentes deux à deux mais que ces trois variables ont pour domaine `{1, 2}`, on est dans un cas où il n'existe pas de solution au problème mais ça ne serait pas détectable par cohérence de bornes, alors qu'une méthode spécialisée serait capable d'être plus précise.
+
+### Programmation par contraintes en Prolog
+
+Pour résoudre des problèmes à contraintes en Prolog, on utilisera la librairie `ic`. Elle introduit des variables particulières qui, en plus des propriétés classiques des variables de Prolog, ont un domaine ainsi qu'une liste des contraintes dans lesquelles elles interviennent.
+
+La librairie gère toute seule les optimisations sur les contraintes (ordre d'appel, simplifications, ...) ainsi que les listes de contraintes déjà utilisées ou en attente. Il nous reste donc à choisir l'ordre de traitement des variables et l'ordre d'essai des valeurs d'un domaine (voir prédicat `search/6`).
+
+Contraintes actives : DELAY, wake et RESUME
+
+#### Contraintes globales
+
+La librairie définit plus de 400 contraintes globales (bibliothèque `ic_global`) avec des méthodes de cohérence spécialisées (http://sofdem.github.io/gccat). 
+
+On notera par exemple :
+ - `alldifferent(+List)` contraint toutes les variables de `List` à être différentes deux à deux
+ - `element(?Index, ++List, ?Value)` contraint `Value` à être égale à l'élément à la position `Index` de `List`
+ - `atmost(+N, ?List, +V)` contraint les éléments de `List`, de telle sorte à ce qu'il y ait au maximum `N` occurences de la valeur `V`
+ - `maxlist(+List, ?Max)` contraint le maximum de `List` à être égal à `Max`
+ - `minlist(+List, ?Min)` contraint le minimum de `List` à être égal à `Min`
+ - `sumlist(+List, ?Sum)` contraint la somme des éléments de `List` à être égale à `Sum`
+
 ## Structure typique du prédicat principal
 
 ```Prolog
@@ -237,4 +315,14 @@ search(..., my_choice(Param, FirstIn, LastOut), ...)
 my_choice(X, Param, In, Out) :- ...
 ```
 
+### Évaluation d'opérations arithmétiques
+
+| Opération                      | Résultat |
+|--------------------------------|----------|
+| `10 = 5 * 2`                   | No       |
+| `10 is 5 * 2`                  | Yes      |
+| `2 * 5 > 2 * 2`                | Yes      |
+| `max([1, 2 + 2, 2 * 5], 10)`   | Yes      |
+| `10 is max([1, 2 + 2, 2 * 5])` | Yes      |
+| `T = [](1, 2, 3), 2 is T[2]`   | Yes      |
 
