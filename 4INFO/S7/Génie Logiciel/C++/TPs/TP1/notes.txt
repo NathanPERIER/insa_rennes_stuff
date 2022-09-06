@@ -1,0 +1,21 @@
+
+char  operator[](const int i) const => accès par copie (appelé quand l'objet est const)
+char& operator[](const int i)       => pour les affectations
+(considérées comme des méthodes différentes)
+
+      char* begin()       => affectation
+const char* begin() const => accès
+
+const char* const chr = &c;
+-----       -----
+  |           |
+  |           v
+  v         S'applique sur le * (on ne peut pas modifier la valeur du pointeur)
+S'applique sur char (on ne peut pas modifier ce sur quoi pointe le pointeur) 
+
+
+unique_ptr<T> => makeunique
+shared_ptr<T> => makeshared
+Gèrent les allocations et désallocations tous seuls
+
+
