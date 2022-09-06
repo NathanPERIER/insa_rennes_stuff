@@ -1,0 +1,30 @@
+classDiagram
+    class Game
+    class GameRun {
+        +setDifficulty(Difficulty d)
+    }
+    Game *-- "0..1" GameRun
+    class Difficulty {
+        +execGame()
+    }
+    <<interface>> Difficulty
+    GameRun *-- "1" Difficulty
+    class EasyDifficulty {
+        +execGame()
+    }
+    Difficulty <|.. EasyDifficulty
+    class MediumDifficulty {
+        +execGame()
+    }
+    Difficulty <|.. MediumDifficulty
+    class HardDifficulty {
+        +execGame()
+    }
+    Difficulty <|.. HardDifficulty
+    class Player
+    <<interface>> Player
+    class AIPlayer
+    Player <|.. AIPlayer
+    class HumanPlayer
+    Player <|.. HumanPlayer
+    GameRun --> "1" AIPlayer
